@@ -15,5 +15,10 @@ func SetupRoutes(db *gorm.DB, r *chi.Mux) {
 		r.Get("/oauth/callback", func(w http.ResponseWriter, r *http.Request) {
 			handlers.OAuthCallback(db, w, r)
 		})
+
+		// User
+		r.Get("/me", func(w http.ResponseWriter, r *http.Request) {
+			handlers.GetCurrentUser(db, w, r)
+		})
 	})
 }

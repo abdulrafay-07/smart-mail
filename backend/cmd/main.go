@@ -13,6 +13,7 @@ import (
 	"github.com/abdulrafay-07/smart-mail/internal/db"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -34,6 +35,13 @@ func main() {
 
 	// Middlewares
 	r.Use(middleware.Logger)
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"}, // Frontend origin
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowCredentials: true, // Allows sending cookies
+		MaxAge:           300,  // Cache preflight request for 5 minutes
+	}))
 
 	// Setup routes
 	routes.SetupRoutes(dbInst, r)

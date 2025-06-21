@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_auth/auth")({
   component: AuthComponent,
 });
 
-function AuthComponent() {
+export function AuthComponent() {
   const handleSignIn = () => {
     const scope = [
       "email",

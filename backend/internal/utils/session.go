@@ -51,3 +51,25 @@ func FindOrCreateSession(db *gorm.DB, w http.ResponseWriter, userID uuid.UUID) e
 
 	return err
 }
+
+func FindSessionFromSessionId(db *gorm.DB, sessionID uuid.UUID) (models.Session, error) {
+	var existingSession models.Session
+
+	err := db.Where("id = ?", sessionID).Find(&existingSession).Error
+	if err != nil {
+		return models.Session{}, err
+	}
+
+	return existingSession, nil
+}
+
+func FindUserFromSession(db *gorm.DB, userID uuid.UUID) error {
+	var user models.User
+
+	err := db.Where("id = ?", userID).Find(&user).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
