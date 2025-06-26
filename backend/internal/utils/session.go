@@ -63,13 +63,13 @@ func FindSessionFromSessionId(db *gorm.DB, sessionID uuid.UUID) (models.Session,
 	return existingSession, nil
 }
 
-func FindUserFromSession(db *gorm.DB, userID uuid.UUID) error {
+func FindUserFromSession(db *gorm.DB, userID uuid.UUID) (models.User, error) {
 	var user models.User
 
 	err := db.Where("id = ?", userID).Find(&user).Error
 	if err != nil {
-		return err
+		return models.User{}, err
 	}
 
-	return nil
+	return user, nil
 }

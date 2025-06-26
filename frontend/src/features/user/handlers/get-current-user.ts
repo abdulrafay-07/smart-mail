@@ -4,7 +4,7 @@ import { BASE_URL } from "@/config";
 import type { ApiResponse } from "@/types/api";
 
 export const getCurrentUser = async () => {
-  const response = await axios.get<ApiResponse>(`${BASE_URL}/me`, {
+  const response = await axios.get<ApiResponse>(`${BASE_URL}/u`, {
     withCredentials: true,
   });
 
