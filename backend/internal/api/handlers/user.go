@@ -10,7 +10,7 @@ import (
 )
 
 func GetCurrentUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
-	_, ok := r.Context().Value("user").(models.User)
+	user, ok := r.Context().Value("user").(models.User)
 	if !ok {
 		utils.WriteJSONResponse(w, http.StatusNotFound, types.ApiResponse{
 			Success: false,
@@ -18,8 +18,18 @@ func GetCurrentUser(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
+	pubUser := types.PublicUser{
+		ID:        user.ID.String(),
+		Name:      user.Name,
+		Email:     user.Email,
+		AvatarURL: user.AvatarURL,
+	}
+
 	utils.WriteJSONResponse(w, http.StatusOK, types.ApiResponse{
 		Success: true,
 		Message: "Session exists",
+		Data: map[string]interface{}{
+			"user": pubUser,
+		},
 	})
 }

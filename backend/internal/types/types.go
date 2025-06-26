@@ -73,3 +73,10 @@ type OutputMailFormat struct {
 	MessageID   string   `json:"messageId"`
 	Labels      []string `json:"labels,omitempty"`
 }
+
+type PublicUser struct {
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	AvatarURL string `json:"avatar_url"`
+}

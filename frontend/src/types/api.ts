@@ -1,5 +1,9 @@
+import type { PublicUser } from "./user";
+
 export interface ApiResponse {
   success: boolean;
   message: string;
-  data: any;
+  data: {
+    user?: PublicUser;
+  };
 }
