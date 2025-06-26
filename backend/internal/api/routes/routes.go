@@ -21,6 +21,10 @@ func SetupRoutes(db *gorm.DB, r *chi.Mux) {
 		r.Route("/u", func(r chi.Router) {
 			r.Use(middleware.AuthenticationMiddleware(db))
 
+			r.Post("/logout", func(w http.ResponseWriter, r *http.Request) {
+				handlers.LogoutUser(db, w, r)
+			})
+
 			r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 				handlers.GetCurrentUser(db, w, r)
 			})

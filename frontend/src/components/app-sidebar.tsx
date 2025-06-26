@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { useLogoutUser } from "@/features/user/api/use-logout-user";
+
 import {
   Sidebar,
   SidebarContent,
@@ -30,7 +32,17 @@ import { sidebarItems } from "@/constants";
 
 export const AppSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { name, email, avatar_url } = useUser();
+
+  const { name, email, avatar_url, clearUser } = useUser();
+  const { mutate } = useLogoutUser();
+
+  const handleLogout = () => {
+    mutate(undefined, {
+      onSuccess: () => {
+        clearUser();
+      },
+    });
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -57,16 +69,18 @@ export const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {sidebarItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {sidebarItems.map((item) =>
+                item ? (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ) : null
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -77,18 +91,18 @@ export const AppSidebar = () => {
           <SidebarMenuItem>
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="truncate">
-                  <Avatar className="size-7">
+                <SidebarMenuButton className="truncate flex items-center justify-center cursor-pointer">
+                  <Avatar className="size-7 group-data-[collapsible=icon]:size-6">
                     <AvatarImage src={avatar_url!} />
-                    <AvatarFallback className="size-7">
+                    <AvatarFallback className="size-7 group-data-[collapsible=icon]:size-6">
                       {(name?.[0] || 'U').toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="truncate">{email}</span>
+                  <span className="truncate group-data-[collapsible=icon]:hidden">{email}</span>
                   {isOpen ? (
-                    <ChevronDown className="ml-auto" />
+                    <ChevronDown className="ml-auto group-data-[collapsible=icon]:hidden" />
                   ) : (
-                    <ChevronUp className="ml-auto" />
+                    <ChevronUp className="ml-auto group-data-[collapsible=icon]:hidden" />
                   )}
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -96,7 +110,7 @@ export const AppSidebar = () => {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
