@@ -1,4 +1,4 @@
-import { Home, Inbox, Settings, MailPlus } from "lucide-react";
+import { Home, Inbox, MailPlus, Send, Trash2 } from "lucide-react";
 
 export const sidebarItems = [
   {
@@ -15,10 +15,15 @@ export const sidebarItems = [
     title: "Specialized",
     url: "/specialized",
     icon: MailPlus,
-  },,
+  },
   {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
+    title: "Sent",
+    url: "/sent",
+    icon: Send,
+  },
+  {
+    title: "Trash",
+    url: "/trash",
+    icon: Trash2,
   },
 ];

@@ -1,10 +1,8 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-import {
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
+import { Header } from "@/components/header";
 import { AppSidebar } from "@/components/app-sidebar";
 import { CheckAuthLayout } from "@/components/check-auth-layout";
 
@@ -17,8 +15,8 @@ function RouteComponent() {
     <CheckAuthLayout>
       <SidebarProvider className="w-full">
         <AppSidebar />
-        <main className="flex-1 pl-4 pt-4">
-          <SidebarTrigger />
+        <main className="flex-1">
+          <Header />
           <Outlet />
         </main>
       </SidebarProvider>

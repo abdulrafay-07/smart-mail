@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation } from "@tanstack/react-router";
 
 import { useLogoutUser } from "@/features/user/api/use-logout-user";
 
@@ -32,9 +33,11 @@ import { sidebarItems } from "@/constants";
 
 export const AppSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const path = location.pathname;
 
-  const { name, email, avatar_url, clearUser } = useUser();
   const { mutate } = useLogoutUser();
+  const { name, email, avatar_url, clearUser } = useUser();
 
   const handleLogout = () => {
     mutate(undefined, {
@@ -57,7 +60,7 @@ export const AppSidebar = () => {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild tooltip="Compose">
                 <Button className="flex justify-start cursor-pointer">
                   <PlusCircle />
                   Compose
@@ -72,11 +75,15 @@ export const AppSidebar = () => {
               {sidebarItems.map((item) =>
                 item ? (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={item.url === path}
+                      tooltip={item.title}
+                    >
+                      <Link to={item.url}>
                         <item.icon />
                         <span>{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ) : null
@@ -91,14 +98,17 @@ export const AppSidebar = () => {
           <SidebarMenuItem>
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="truncate flex items-center justify-center cursor-pointer">
-                  <Avatar className="size-7 group-data-[collapsible=icon]:size-6">
+                <SidebarMenuButton size="lg" className="truncate cursor-pointer">
+                  <Avatar className="size-8 group-data-[collapsible=icon]:size-6">
                     <AvatarImage src={avatar_url!} />
-                    <AvatarFallback className="size-7 group-data-[collapsible=icon]:size-6">
+                    <AvatarFallback className="size-8 group-data-[collapsible=icon]:size-6">
                       {(name?.[0] || 'U').toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="truncate group-data-[collapsible=icon]:hidden">{email}</span>
+                  <div className="flex flex-col">
+                    <span className="truncate text-sm font-medium group-data-[collapsible=icon]:hidden">{name}</span>
+                    <span className="truncate text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">{email}</span>
+                  </div>
                   {isOpen ? (
                     <ChevronDown className="ml-auto group-data-[collapsible=icon]:hidden" />
                   ) : (
