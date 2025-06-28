@@ -53,7 +53,7 @@ func GetUserMails(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 1. Fetch list of messages
-	req, _ := http.NewRequest("GET", "https://gmail.googleapis.com/gmail/v1/users/me/messages"+"?maxResults=20", nil)
+	req, _ := http.NewRequest("GET", "https://gmail.googleapis.com/gmail/v1/users/me/messages"+"?maxResults=50", nil)
 	req.Header.Set("Authorization", "Bearer "+updatedUserData.AccessToken)
 
 	res, err := http.DefaultClient.Do(req)
@@ -146,6 +146,14 @@ func GetUserMails(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 		mail.ThreadID = fullMessage.ThreadID
 		mail.MessageID = fullMessage.ID
 		mail.Labels = fullMessage.LabelIDs
+
+		// Set mail.Category based on label starting with "CATEGORY_"
+		for _, label := range fullMessage.LabelIDs {
+			if len(label) > 9 && label[:9] == "CATEGORY_" {
+				mail.Category = label[9:]
+				break
+			}
+		}
 
 		// Append to extractedData slice
 		extractedData = append(extractedData, mail)

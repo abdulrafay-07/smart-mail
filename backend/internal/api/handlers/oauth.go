@@ -66,7 +66,7 @@ func OAuthCallback(db *gorm.DB, w http.ResponseWriter, r *http.Request) {
 	}
 
 	userID, err := services.FindOrCreateUser(db, tokenResp, userInfo, currTime)
-	if err != gorm.ErrRegistered && err != gorm.ErrRecordNotFound {
+	if err != nil {
 		utils.WriteJSONResponse(w, http.StatusInternalServerError, types.ApiResponse{
 			Success: false,
 			Message: "Failed to find or create user",

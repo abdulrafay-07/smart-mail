@@ -1,3 +1,4 @@
+import type { Mails } from "./mails";
 import type { PublicUser } from "./user";
 
 export interface ApiResponse {
@@ -5,5 +6,6 @@ export interface ApiResponse {
   message: string;
   data: {
     user?: PublicUser;
+    mails?: Mails;
   };
 }

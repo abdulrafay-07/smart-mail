@@ -43,6 +43,13 @@ func main() {
 		MaxAge:           300,  // Cache preflight request for 5 minutes
 	}))
 
+	// Setup Gemini Client
+	// ctx := context.Background()
+	// client, err := genai.NewClient(ctx, nil)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
 	// Setup routes
 	routes.SetupRoutes(dbInst, r)
 

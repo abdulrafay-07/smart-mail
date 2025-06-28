@@ -3,38 +3,54 @@ import {
   CardContent,
 } from "@/components/ui/card";
 
-import { Mail, MessageSquare, TrendingDown, TrendingUp, Zap } from "lucide-react";
+import { Mail, MessageSquare, TrendingUp, Zap } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-
-const cardsData = [
-  {
-    title: "Unread Emails",
-    value: "24",
-    trendIcon: TrendingDown,
-    trendDesc: "12% less than yesterday",
-    icon: Mail,
-    color: "text-destructive",
-  },
-  {
-    title: "Inbox Health",
-    value: "87%",
-    trendIcon: TrendingUp,
-    trendDesc: "Great job!",
-    icon: Zap,
-    color: "text-green-700",
-  },
-  {
-    title: "Response Rate",
-    value: "92%",
-    trendIcon: TrendingUp,
-    trendDesc: "Above average",
-    icon: MessageSquare,
-    color: "text-green-700",
-  },
-];
+import { useUser } from "@/store/user";
+import { useMails } from "@/store/mail";
+import { getMailsCardData } from "@/lib/mails";
 
 export const OverviewCards = () => {
+  const { email } = useUser();
+  const { mails } = useMails();
+
+  const {
+    unreadTrendColor,
+    unreadTrendDesc,
+    unreadTrendIcon,
+    todayUnreadMailsCount,
+    score,
+    responseRate,
+    responseRateIcon,
+    responseRateMsg,
+  } = getMailsCardData(mails, email!);
+
+  const cardsData = [
+    {
+      title: "Unread Emails",
+      value: todayUnreadMailsCount,
+      trendIcon: unreadTrendIcon,
+      trendDesc: unreadTrendDesc,
+      icon: Mail,
+      color: unreadTrendColor,
+    },
+    {
+      title: "Inbox Health",
+      value: `${score}%`,
+      trendIcon: TrendingUp,
+      trendDesc: "Great job!",
+      icon: Zap,
+      color: "text-green-700",
+    },
+    {
+      title: "Response Rate",
+      value: `${responseRate}%`,
+      trendIcon: responseRateIcon,
+      trendDesc: responseRateMsg,
+      icon: MessageSquare,
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {cardsData.map((card, index) => (

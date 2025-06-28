@@ -58,6 +58,20 @@ type MessagePartBody struct {
 	Data         string `json:"data"`
 }
 
+// type EmailCategory string
+
+// const (
+// 	CategoryWork        EmailCategory = "Work"
+// 	CategoryPersonal    EmailCategory = "Personal"
+// 	CategoryPromotion   EmailCategory = "Promotion"
+// 	CategoryShopping    EmailCategory = "Shopping"
+// 	CategorySocial      EmailCategory = "Social"
+// 	CategoryFinance     EmailCategory = "Finance"
+// 	CategoryTravel      EmailCategory = "Travel"
+// 	CategoryNewsletters EmailCategory = "Newsletters"
+// 	CategoryOther       EmailCategory = "Other"
+// )
+
 type OutputMailFormat struct {
 	From        string   `json:"from"`
 	To          []string `json:"to"`
@@ -72,6 +86,7 @@ type OutputMailFormat struct {
 	ThreadID    string   `json:"threadId"`
 	MessageID   string   `json:"messageId"`
 	Labels      []string `json:"labels,omitempty"`
+	Category    string   `json:"category"`
 }
 
 type PublicUser struct {
